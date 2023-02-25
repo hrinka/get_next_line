@@ -6,20 +6,25 @@
 /*   By: hrinka <hrinka@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/07 17:14:22 by hrinka            #+#    #+#             */
-/*   Updated: 2023/01/07 17:18:00 by hrinka           ###   ########.fr       */
+/*   Updated: 2023/02/25 14:09:17 by hrinka           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-int main()
-{
-	char	*line;
-	int		fd = open("sample.txt", O_RDONLY);
+#include <fcntl.h>
+#include "get_next_line.h"
 
-	printf("%sd\n", get_next_line(fd, &line));
-	printf("%s\n", &line);
-	printf("%sd\n", get_next_line(fd, &line));
-	printf("%s\n", &line);
-	printf("%sd\n", get_next_line(fd, &line));
-	printf("%s\n", &line);
-	close(fd);
+int	main(void)
+{
+	int		fd;
+	char	*line;
+
+	line = "";
+	fd = open("test.txt", O_RDONLY);
+	while (line)
+	{
+		line = get_next_line(fd);
+		printf("> %s", line);
+		free(line);
+	}
+	return (0);
 }
