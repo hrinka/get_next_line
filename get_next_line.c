@@ -6,7 +6,7 @@
 /*   By: hrinka <hrinka@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/07 17:18:16 by hrinka            #+#    #+#             */
-/*   Updated: 2023/02/25 14:10:52 by hrinka           ###   ########.fr       */
+/*   Updated: 2023/03/03 13:53:23 by hrinka           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ char	*ft_get_line(char *save)
 		i++;
 	s = (char *)malloc(sizeof(char) * (i + 2));
 	if (!s)
+		free (save); //addedd
 		return (NULL);
 	i = 0;
 	while (save[i] && save[i] != '\n')
@@ -56,7 +57,10 @@ char	*ft_save(char *save)
 	}
 	s = (char *)malloc(sizeof(char) * (ft_strlen(save) - i + 1));
 	if (!s)
+	{
+		free (save); //added
 		return (NULL);
+	}
 	i += 1;
 	c = 0;
 	while (save[i])
@@ -82,6 +86,7 @@ char	*ft_read(int fd, char *save)
 		if (read_byte == -1)
 		{
 			free (buf);
+			free (save);//added
 			return (NULL);
 		}
 		buf[read_byte] = '\0';
@@ -104,6 +109,33 @@ char	*get_next_line(int fd)
 	if (!save)
 		return (NULL);
 	line = ft_get_line(save);
+	if (line == NULL)
+		return (NULL);
 	save = ft_save(save);
 	return (line);
 }
+
+
+#include <stdio.h>
+#include <fcntl.h>
+
+int	main(void)
+{
+	int		fd;
+	char	*line;
+
+	fd = open("test.txt", O_RDONLY);
+	while (line)
+	{
+		line = get_next_line(fd);
+		printf("> %s", line);
+		free(line);
+	}
+	close (fd);
+	return (0);
+}
+
+// __attribute__((destructor))
+// static void	destructor(void) {
+// 	system("leaks -q a.out");
+// }
