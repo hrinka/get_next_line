@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*   get_next_line_bonus.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hrinka <hrinka@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/03/04 20:19:18 by hrinka            #+#    #+#             */
-/*   Updated: 2023/11/05 18:29:48 by hrinka           ###   ########.fr       */
+/*   Created: 2023/11/05 18:25:27 by hrinka            #+#    #+#             */
+/*   Updated: 2023/11/05 20:05:06 by hrinka           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "get_next_line_bonus.h"
 
 static char	*create_newline_frm_save(char *save)
 {
@@ -83,56 +83,20 @@ static char	*read_file_and_save(int fd, char *save)
 char	*get_next_line(int fd)
 {
 	char		*gnl_line;
-	static char	*save_buf;
+	static char	*save_buf[OPEN_MAX];
 
 	errno = 0;
 	if (fd < 0 || OPEN_MAX < fd || BUFFER_SIZE <= 0 || INT_MAX < BUFFER_SIZE)
 		return (NULL);
-	if (cnt_chr_in_str('\n', save_buf) == 0)
+	if (cnt_chr_in_str('\n', save_buf[fd]) == 0)
 	{
-		save_buf = read_file_and_save(fd, save_buf);
-		if (!save_buf)
+		save_buf[fd] = read_file_and_save(fd, save_buf[fd]);
+		if (!save_buf[fd])
 			return (NULL);
 	}
-	gnl_line = create_newline_frm_save(save_buf);
-	save_buf = delete_newline_in_save(save_buf);
+	gnl_line = create_newline_frm_save(save_buf[fd]);
+	save_buf[fd] = delete_newline_in_save(save_buf[fd]);
 	if (errno != 0)
-		return (ft_free(&save_buf, &gnl_line));
+		return (ft_free(&save_buf[fd], &gnl_line));
 	return (gnl_line);
 }
-
-// #include <fcntl.h>
-// #include <stdio.h>
-
-// int	main(void)
-// {
-//   int	fd;
-//   char	*line;
-
-//   fd = open("./maps/world/world1_4.ber", O_RDONLY);
-//   if (fd == -1)
-//     {
-//       perror("open");
-//       return (1);
-//     }
-//   while ((line = get_next_line(fd)))
-//     {
-//       printf("%s\n", line);
-//       free(line);
-//     }
-//   if (line == NULL)
-//     {
-//       printf("Reached end of file.\n");
-//     }
-//   if (close(fd) == -1)
-//     {
-//       perror("close");
-//       return (1);
-//     }
-//   return (0);
-// }
-
-// __attribute__((destructor))
-// static void	destructor(void) {
-// 	system("leaks -q a.out");
-// }

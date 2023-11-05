@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line_utils.c                              :+:      :+:    :+:   */
+/*   get_next_line_utils_bonus.c                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hrinka <hrinka@student.42tokyo.jp>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/02/25 14:10:34 by hrinka            #+#    #+#             */
-/*   Updated: 2023/11/05 18:30:37 by hrinka           ###   ########.fr       */
+/*   Created: 2023/11/05 18:27:54 by hrinka            #+#    #+#             */
+/*   Updated: 2023/11/05 18:28:14 by hrinka           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "get_next_line_bonus.h"
 
 size_t	ft_strlen_gnl(const char *str)
 {
